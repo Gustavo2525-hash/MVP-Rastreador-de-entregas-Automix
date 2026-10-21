@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: automix-entregas-demo
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/auth/status
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PGHOST
+        sync: false
+      - key: PGPORT
+        sync: false
+      - key: PGDATABASE
+        sync: false
+      - key: PGUSER
+        sync: false
+      - key: PGPASSWORD
+        sync: false
+      - key: PGSSL
+        value: "true"
+      - key: PGPOOL_MAX
+        value: "3"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_STORAGE_BUCKET
+        value: comprovantes
+      - key: MAPTILER_API_KEY
+        sync: false

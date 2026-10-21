@@ -1,0 +1,168 @@
+/* AutoMix | componentes compartilhados, motorista e formulários do admin */
+:root { color-scheme: light; font-family: Inter, "Segoe UI", Arial, sans-serif; font-synthesis: none; text-rendering: optimizeLegibility; color: #153b4d; background: #edf3f4; --navy: #073b57; --navy-deep: #052f49; --green: #087e69; --green-dark: #066653; --lime: #35a651; --red: #bd3045; --muted: #627982; --line: #d9e5e8; --soft: #f5f9fa; --shadow: 0 10px 28px rgb(8 43 61 / 7%); }
+* { box-sizing: border-box; }
+html { min-width: 320px; scroll-behavior: smooth; }
+body { min-width: 320px; min-height: 100vh; margin: 0; color: #153b4d; background: #edf3f4; font-size: 17px; line-height: 1.5; }
+button, input, select, textarea { font: inherit; }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 54px; padding: 12px 18px; border: 1px solid transparent; border-radius: 12px; color: #fff; background: var(--green); font-weight: 800; cursor: pointer; transition: transform .15s ease, background .15s ease, box-shadow .15s ease; }
+button:hover:not(:disabled) { background: var(--green-dark); box-shadow: 0 5px 15px rgb(6 102 83 / 17%); transform: translateY(-1px); }
+button:active:not(:disabled) { transform: translateY(0); box-shadow: none; }
+button:disabled { opacity: .6; cursor: not-allowed; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #e6b84d; outline-offset: 3px; }
+a { color: var(--green-dark); }
+[hidden] { display: none !important; }
+.cabecalho-motorista { position: relative; display: grid; grid-template-columns: 190px minmax(0,1fr) auto; align-items: center; gap: clamp(20px,4vw,54px); min-height: 150px; padding: 22px clamp(18px,5vw,72px) 27px; color: #fff; background: radial-gradient(ellipse at 82% 0, rgb(43 129 130 / 30%), transparent 35%), linear-gradient(115deg,#062f49,#073e5c 58%,#0c5269); }
+.cabecalho-motorista::after { position: absolute; inset: auto 0 0; height: 5px; background: linear-gradient(90deg,#37a84c,#7ac94e); content: ""; }
+.marca-loja { display: grid; justify-items: center; align-content: center; width: 190px; min-height: 78px; padding: 10px 14px; border: 1px solid rgb(255 255 255 / 24%); border-radius: 13px; color: #fff; background: rgb(1 26 43 / 24%); text-decoration: none; }
+.logo-automix { position: relative; color: #fff; font-size: 1.9rem; font-style: italic; font-weight: 1000; letter-spacing: -.075em; line-height: 1; }
+.logo-automix > span { margin-left: 2px; }
+.logo-automix::after { position: absolute; right: 0; bottom: -6px; left: 1px; height: 3px; background: #43b34d; content: ""; transform: skewX(-24deg); }
+.assinatura-loja { display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; margin-top: 10px; color: #fff; font-size: .61rem; line-height: 1; }
+.marca-ancora { padding: 5px 7px; border: 1px solid rgb(255 255 255 / 44%); border-radius: 99px; color: #fff; background: var(--red); font-size: .57rem; white-space: nowrap; }
+.titulo-motorista { min-width: 0; }
+.sobretitulo, .rotulo-secao { margin: 0 0 6px; color: #b7e7d4; font-size: .75rem; font-weight: 850; letter-spacing: .13em; }
+.titulo-motorista h1 { margin: 0; color: #fff; font-size: clamp(1.8rem,3.5vw,2.65rem); line-height: 1.08; letter-spacing: -.03em; }
+.titulo-motorista > p:last-child { margin: 8px 0 0; color: #d1e3eb; }
+.acoes-motorista, .acoes-admin { display: flex; align-items: center; gap: 9px; }
+.botao-sair { min-height: 44px; padding: 0 16px; border-color: rgb(255 255 255 / 35%); color: #fff; background: rgb(255 255 255 / 8%); }
+.botao-sair:hover { color: #fff; background: rgb(255 255 255 / 18%); }
+.link-central { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 14px; border: 1px solid rgb(255 255 255 / 35%); border-radius: 11px; color: #fff; background: rgb(255 255 255 / 8%); font-size: .88rem; font-weight: 750; text-decoration: none; }
+.link-central:hover { color: #fff; background: rgb(255 255 255 / 18%); }
+.conteudo-motorista { width: min(1080px,100%); margin: 0 auto; padding: 26px clamp(14px,4vw,36px) 48px; }
+.conteudo-admin { width: min(1320px,100%); }
+.seletor-motorista, .painel-entregas { border: 1px solid var(--line); border-radius: 18px; background: #fff; box-shadow: var(--shadow); }
+.seletor-motorista { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 22px; padding: 23px; }
+.seletor-motorista h2, .cabecalho-lista h2, .topo-dialogo h2 { margin: 0; color: var(--navy); font-size: 1.35rem; line-height: 1.25; letter-spacing: -.015em; }
+.seletor-motorista p:not(.rotulo-secao) { margin: 6px 0 0; color: var(--muted); }
+.rotulo-secao { color: #0a826b; font-size: .7rem; }
+.resumo-funcoes { display: grid; gap: 8px; }
+.resumo-funcoes span { padding: 11px 13px; border: 1px solid #e7eef0; border-radius: 11px; color: #5a737d; background: #f7fafb; font-size: .88rem; }
+.resumo-funcoes b { color: #15465b; }
+.grade-admin { display: grid; grid-template-columns: minmax(320px,.9fr) minmax(0,1.1fr); align-items: start; gap: 16px; margin-top: 17px; }
+.grade-admin .painel-entregas { margin: 0; }
+.painel-entregas { margin-top: 17px; padding: 22px; }
+.cabecalho-lista { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.contador-rota { display: grid; min-width: 42px; height: 42px; place-items: center; padding: 0 8px; border-radius: 50%; color: #07536a; background: #e8f1f5; font-size: 1.08rem; font-weight: 850; }
+.formulario-usuario form { display: grid; gap: 12px; margin-top: 16px; }
+.formulario-usuario label, .campo-comentario { display: grid; gap: 6px; color: #274957; font-size: .9rem; font-weight: 750; }
+.formulario-usuario input, .formulario-usuario select, select, textarea { width: 100%; min-height: 49px; padding: 10px 12px; border: 1px solid #c7d8dd; border-radius: 10px; color: #163f52; background: #fff; }
+.formulario-usuario small { color: var(--muted); font-size: .8rem; font-weight: 450; }
+.formulario-usuario input:focus-visible, .formulario-usuario select:focus-visible { outline-color: #e6b84d; }
+.formulario-usuario button { width: 100%; min-height: 50px; }
+.ajuda-admin { margin: 9px 0 0; color: var(--muted); font-size: .87rem; }
+.mensagem-admin { min-height: 23px; margin: 0; color: var(--muted); font-size: .88rem; }
+.mensagem-admin[data-tipo="erro"] { color: #b4233b; font-weight: 750; }
+.mensagem-admin[data-tipo="sucesso"] { color: #087452; font-weight: 750; }
+.lista-usuarios-itens { display: grid; gap: 9px; margin-top: 14px; }
+.usuario-admin { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 7px 12px; padding: 13px; border: 1px solid #e1eaec; border-radius: 12px; background: #fbfdfd; }
+.usuario-admin strong { color: #15465b; font-size: .96rem; }
+.usuario-admin p { margin: 3px 0 0; color: var(--muted); font-size: .86rem; overflow-wrap: anywhere; }
+.papel-admin { padding: 5px 9px; border-radius: 99px; color: #07536a; background: #e8f1f5; font-size: .77rem; font-weight: 850; white-space: nowrap; }
+.papel-admin.motorista { color: #08704f; background: #e9f7ef; }
+.papel-admin.master { color: #a3223c; background: #fcebef; }
+.estado-admin { grid-column: 1 / -1; color: #08704f; font-size: .8rem; font-weight: 750; }
+
+/* Área do motorista: progresso visível, lista simples e alvos grandes */
+.estado-conexao { position: sticky; z-index: 5; top: 0; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; padding: 10px 16px; color: #07536a; background: #e4f1f7; text-align: center; font-size: .9rem; font-weight: 800; box-shadow: 0 3px 10px rgb(8 43 61 / 7%); }
+.estado-conexao[data-tipo="offline"] { color: #674609; background: #fff2d1; }
+.estado-conexao[data-tipo="sync"] { color: #07536a; background: #e4f1f7; }
+.estado-conexao button { min-height: 42px; padding: 6px 13px; background: var(--navy); font-size: .84rem; }
+.resumo-rota { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; margin-bottom: 15px; }
+.indicador-rota { display: grid; align-content: center; gap: 4px; min-height: 98px; padding: 13px 18px; border: 1px solid var(--line); border-radius: 15px; background: #fff; box-shadow: var(--shadow); }
+.indicador-rota span { color: var(--muted); font-size: .92rem; font-weight: 750; }
+.indicador-rota strong { color: var(--navy); font-size: clamp(1.65rem,4vw,2.15rem); line-height: 1.1; font-variant-numeric: tabular-nums; }
+.indicador-feitas { border-left: 5px solid #148164; }
+.indicador-faltam { border-left: 5px solid #d8941f; }
+.indicador-tempo { border-left: 5px solid var(--navy); }
+.indicador-tempo strong { font-size: clamp(1.3rem,3vw,1.75rem); }
+.painel-inicio-rota { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin: 0 0 15px; padding: 19px 21px; border: 1px solid #bfe0d0; border-radius: 16px; background: linear-gradient(110deg,#f0faf4,#fff); box-shadow: var(--shadow); }
+.painel-inicio-rota h2 { margin: 0; color: var(--navy); font-size: 1.17rem; }
+.painel-inicio-rota p:not(.rotulo-secao) { margin: 5px 0 0; color: var(--muted); font-size: .9rem; }
+.botao-iniciar-rota { flex: 0 0 auto; min-width: 210px; min-height: 60px; font-size: 1.06rem; }
+.painel-rota-simples { margin-top: 0; }
+.mensagem-rota { min-height: 25px; margin: 11px 0; color: var(--muted); font-size: .94rem; }
+.lista-rota { display: grid; grid-template-columns: 1fr; gap: 11px; }
+.cartao-rota { display: grid; align-content: start; gap: 11px; padding: 17px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+.topo-cartao-rota { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.topo-cartao-rota h3 { margin: 0; color: var(--navy); font-size: 1.13rem; line-height: 1.3; }
+.etiqueta-pendente { flex: 0 0 auto; padding: 5px 9px; border-radius: 99px; color: #a73d39; background: #fff0ed; font-size: .79rem; font-weight: 850; }
+.endereco-rota { margin: 0; color: #405e6c; font-size: 1rem; overflow-wrap: anywhere; }
+.botao-gps, .botao-navegar-rota { display: inline-flex; align-items: center; justify-content: center; width: 100%; min-height: 53px; padding: 10px 14px; border: 1px solid #d2e2e7; border-radius: 12px; color: #16465b; background: #edf4f6; font-weight: 850; text-decoration: none; }
+.botao-gps:hover, .botao-navegar-rota:hover { color: #123f53; background: #dfecef; }
+.botao-finalizar { width: 100%; min-height: 62px; border-radius: 12px; color: #fff; background: #087e69; font-size: 1.05rem; }
+.botao-finalizar:hover { background: #066653; }
+.estado-vazio-rota { padding: 20px; border: 1px dashed #bfd2d8; border-radius: 13px; color: #627982; background: #f7fafb; text-align: center; }
+.aviso-acesso-motorista { max-width: 720px; margin: 28px auto; padding: clamp(22px,5vw,36px); border: 1px solid var(--line); border-radius: 18px; background: #fff; box-shadow: var(--shadow); }
+.aviso-acesso-motorista h2 { margin: 0; color: var(--navy); font-size: clamp(1.35rem,4vw,1.8rem); }
+.aviso-acesso-motorista p:not(.rotulo-secao) { color: var(--muted); }
+.acoes-aviso-motorista { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
+.link-dashboard-motorista { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 16px; border: 1px solid var(--line); border-radius: 11px; color: #174b60; background: #eff4f5; font-weight: 800; text-decoration: none; }
+.link-dashboard-motorista:hover { background: #e2ecef; }
+
+/* Registro da entrega */
+#dialog-finalizar { width: min(600px,calc(100vw - 20px)); max-height: calc(100dvh - 20px); padding: 0; overflow: auto; border: 0; border-radius: 20px; color: #153b4d; background: #fff; box-shadow: 0 22px 70px rgb(4 34 53 / 30%); }
+#dialog-finalizar::backdrop { background: rgb(4 34 53 / 65%); backdrop-filter: blur(3px); }
+#form-finalizar { display: grid; gap: 13px; padding: clamp(18px,4vw,27px); }
+.topo-dialogo { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.topo-dialogo h2 { margin: 0; color: var(--navy); font-size: 1.4rem; }
+.fechar-dialogo { flex: 0 0 48px; width: 48px; min-height: 48px; padding: 0; color: #294e5d; background: #edf3f4; font-size: 1.55rem; }
+.endereco-finalizar { margin: 0; padding: 12px 14px; border-radius: 10px; color: #3e5d69; background: #f0f5f6; font-size: .92rem; }
+.campo-foto { display: flex; align-items: center; gap: 12px; min-height: 82px; padding: 12px 14px; border: 2px dashed #9bbdc6; border-radius: 13px; background: #f6fafb; cursor: pointer; }
+.campo-foto:hover, .campo-foto:focus-within { border-color: var(--green); background: #eff8f4; }
+.icone-camera { display: grid; flex: 0 0 48px; width: 48px; height: 48px; place-items: center; border-radius: 13px; background: #e3f1ec; font-size: 1.55rem; }
+.campo-foto strong, .campo-foto small { display: block; }
+.campo-foto strong { color: #17465a; font-size: .94rem; }
+.campo-foto small { margin-top: 3px; color: var(--muted); font-size: .79rem; font-weight: 450; }
+.campo-foto input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.nome-foto { min-height: 20px; margin: -7px 0 0; color: var(--muted); font-size: .83rem; }
+.opcoes-resultado { display: grid; gap: 8px; margin: 0; padding: 0; border: 0; }
+.opcoes-resultado legend { margin-bottom: 5px; color: #214754; font-size: .96rem; font-weight: 850; }
+.opcao-resultado { position: relative; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 12px 44px 12px 13px; border: 1px solid #d7e3e6; border-radius: 12px; background: #fff; cursor: pointer; transition: border-color .15s,background .15s,transform .15s; }
+.opcao-resultado:hover { border-color: #9fc4c6; background: #f9fcfc; }
+.opcao-resultado:active { transform: scale(.995); }
+.opcao-resultado:has(input:checked) { border-color: #159171; background: #eff8f4; box-shadow: 0 0 0 2px rgb(8 126 105 / 10%); }
+.opcao-resultado.devolvida:has(input:checked) { border-color: var(--red); background: #fff3f5; box-shadow: 0 0 0 2px rgb(189 48 69 / 9%); }
+.opcao-resultado input { flex: 0 0 24px; width: 24px; height: 24px; margin: 0; accent-color: var(--green); }
+.opcao-resultado.devolvida input { accent-color: var(--red); }
+.opcao-resultado strong { color: #173e51; font-size: .95rem; }
+.opcao-resultado:has(input:checked)::after { position: absolute; top: 50%; right: 13px; display: grid; width: 24px; height: 24px; place-items: center; border-radius: 50%; color: #fff; background: var(--green); content: "✓"; font-size: .8rem; font-weight: 900; transform: translateY(-50%); }
+.opcao-resultado.devolvida:has(input:checked)::after { background: var(--red); content: "↩"; }
+.campo-comentario { display: grid; gap: 6px; color: #294957; font-size: .89rem; font-weight: 750; }
+textarea { min-height: 78px; resize: vertical; }
+#comentario-entrega { min-height: 78px; padding: 11px 12px; border: 1px solid #c7d8dd; border-radius: 10px; color: #163f52; }
+.acoes-dialogo { display: flex; justify-content: flex-end; gap: 9px; padding-top: 2px; }
+.acoes-dialogo button { min-width: 135px; min-height: 54px; }
+.botao-cancelar { border: 1px solid #d7e2e5; color: #315465; background: #edf3f4; }
+.botao-cancelar:hover { color: #173e52; background: #e1ebed; }
+#confirmar-finalizacao { flex: 1; min-width: 185px; background: var(--green); }
+
+@media (max-width: 850px) { .grade-admin { grid-template-columns: 1fr; } .seletor-motorista { grid-template-columns: 1fr; } }
+@media (max-width: 720px) {
+  body { font-size: 16px; }
+  .cabecalho-motorista { display: flex; align-items: stretch; flex-direction: column; gap: 13px; min-height: 0; padding: 16px 16px 22px; }
+  .cabecalho-motorista .marca-loja { width: 172px; min-height: 68px; }
+  .titulo-motorista h1 { font-size: 1.85rem; }
+  .acoes-motorista, .acoes-admin { justify-content: flex-end; }
+  .conteudo-motorista { padding: 18px 12px 32px; }
+  .resumo-rota { gap: 6px; margin-bottom: 11px; }
+  .indicador-rota { min-height: 82px; padding: 9px 7px 9px 10px; border-radius: 12px; }
+  .indicador-rota span { font-size: .77rem; line-height: 1.2; }
+  .indicador-rota strong { font-size: 1.5rem; }
+  .indicador-tempo strong { font-size: 1.05rem; letter-spacing: -.03em; }
+  .painel-entregas { margin-top: 12px; padding: 16px 13px; border-radius: 15px; }
+  .painel-rota-simples { margin-top: 0; }
+  .painel-inicio-rota { align-items: stretch; flex-direction: column; gap: 12px; padding: 16px; }
+  .botao-iniciar-rota { width: 100%; min-height: 64px; }
+  .cartao-rota { padding: 15px 13px; }
+  .botao-finalizar, .botao-gps, .botao-navegar-rota { min-height: 58px; }
+  .acoes-dialogo { flex-direction: column-reverse; }
+  .acoes-dialogo button, #confirmar-finalizacao { width: 100%; min-width: 0; min-height: 58px; }
+  #dialog-finalizar { width: 100vw; height: 100dvh; max-width: none; max-height: 100dvh; margin: 0; border-radius: 0; }
+  #form-finalizar { min-height: 100%; gap: 11px; padding: 17px 15px max(17px,env(safe-area-inset-bottom)); }
+  .opcao-resultado { min-height: 66px; }
+  .formulario-usuario form { gap: 11px; }
+  .conteudo-admin .seletor-motorista, .conteudo-admin .painel-entregas { padding: 17px 14px; }
+  .acoes-aviso-motorista { display: grid; grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }

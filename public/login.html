@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#073c5b">
+  <title>Acesso ao sistema | AutoMix</title>
+  <link rel="stylesheet" href="/login.css?v=20261020-login-redesign">
+  <script defer src="/login.js?v=20261019-v1"></script>
+</head>
+<body>
+  <main class="pagina-acesso">
+    <section class="cartao-acesso">
+      <div class="marca-acesso" aria-label="AutoMix, Grupo Auto Bitts, Rede Âncora">
+        <div class="logo-automix">AUTO<span>MIX</span></div>
+        <div class="assinatura-loja"><span>Grupo <strong>Auto Bitts</strong></span><span class="marca-ancora">Rede <strong>ÂNCORA</strong></span></div>
+        <p class="chamada-marca">A operação das entregas, em um só lugar.</p>
+      </div>
+
+      <div id="area-login" hidden>
+        <p class="sobretitulo">ACESSO SEGURO</p>
+        <h1>Entrar no sistema</h1>
+        <p class="descricao">Entre para organizar rotas, acompanhar entregas ou acessar sua jornada como motorista.</p>
+        <form id="form-login">
+          <label for="usuario-login">Usuário<input id="usuario-login" name="usuario" autocomplete="username" placeholder="Digite seu usuário" required autofocus></label>
+          <label for="senha-login">Senha<input id="senha-login" name="senha" type="password" autocomplete="current-password" placeholder="Digite sua senha" required></label>
+          <button type="submit"><span>Entrar</span><span aria-hidden="true">→</span></button>
+        </form>
+      </div>
+
+      <div id="area-bootstrap" hidden>
+        <p class="sobretitulo">CONFIGURAÇÃO INICIAL</p>
+        <h1>Conta master do Gustavo</h1>
+        <p class="descricao">Defina a senha de acesso da conta principal. Depois, você poderá cadastrar a equipe.</p>
+        <form id="form-bootstrap">
+          <label for="senha-inicial">Criar senha<input id="senha-inicial" name="senha" type="password" minlength="8" autocomplete="new-password" required></label>
+          <label for="confirmar-senha-inicial">Confirmar senha<input id="confirmar-senha-inicial" name="confirmarSenha" type="password" minlength="8" autocomplete="new-password" required></label>
+          <button type="submit">Criar conta master</button>
+        </form>
+      </div>
+      <p id="mensagem-acesso" class="mensagem-acesso" role="status" aria-live="polite">Verificando configuração…</p>
+    </section>
+    <p class="rodape-acesso">Central de rastreamento de entregas</p>
+  </main>
+</body>
+</html>

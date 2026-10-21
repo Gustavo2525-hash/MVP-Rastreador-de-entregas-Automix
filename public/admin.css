@@ -1,0 +1,8 @@
+/* Complementos da tela administrativa */
+.acoes-admin { display: flex; align-items: center; justify-content: flex-end; gap: 9px; }
+.conteudo-admin { width: min(1320px,100%); }
+.introducao-admin { grid-template-columns: minmax(0,1.05fr) minmax(300px,.95fr); }
+.grade-admin { grid-template-columns: minmax(320px,.9fr) minmax(0,1.1fr); }
+.lista-usuarios .ajuda-admin { margin-top: 8px; }
+@media (max-width: 850px) { .introducao-admin, .grade-admin { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .acoes-admin { justify-content: stretch; } .acoes-admin > * { flex: 1; } .grade-admin { gap: 12px; } }

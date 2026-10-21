@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta
+    name="description"
+    content="Painel da central para cadastrar e acompanhar entregas."
+  >
+
+  <title>Dashboard de entregas | AutoMix</title>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  >
+  <link rel="stylesheet" href="/style.css?v=20261020-area-routes-v1">
+
+  <script
+    defer
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+  <script defer src="/app.js?v=20261020-area-routes-v1"></script>
+</head>
+
+<body>
+  <header class="cabecalho">
+    <div class="marca-loja" aria-label="AutoMix, Grupo Auto Bitts, Rede Âncora">
+      <div class="logo-automix">AUTO<span>MIX</span></div>
+      <div class="assinatura-loja">
+        <span class="grupo-bitts">Grupo <strong>Auto Bitts</strong></span>
+        <span class="marca-ancora">Rede <strong>ÂNCORA</strong></span>
+      </div>
+    </div>
+
+    <div class="marca-central">
+      <p class="sobretitulo estado-operacao"><span class="indicador-online" aria-hidden="true"></span> OPERAÇÃO DE ENTREGAS</p>
+      <h1>Central de entregas</h1>
+      <p class="descricao-cabecalho">Planeje as rotas e acompanhe cada parada em um só lugar.</p>
+    </div>
+
+    <div class="acoes-cabecalho">
+      <nav class="navegacao-papeis" aria-label="Áreas do sistema">
+        <a id="link-admin" href="/admin.html" hidden><span class="icone-link" aria-hidden="true">▦</span><span>Painel admin</span></a>
+        <a href="/motorista.html"><span class="icone-link" aria-hidden="true">➜</span><span>Área do motorista</span></a>
+      </nav>
+      <div class="botoes-cabecalho">
+        <button id="atualizar" class="botao-atualizar" type="button"><span class="icone-atualizar" aria-hidden="true">↻</span><span>Atualizar dados</span></button>
+        <button id="sair" class="botao-sair" type="button"><span class="icone-sair" aria-hidden="true">↪</span><span>Sair</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="dashboard" class="conteudo layout-central">
+    <aside class="barra-lateral" aria-label="Navegação principal">
+      <p class="rotulo-sidebar">PAINÉIS</p>
+      <nav class="nav-sidebar" aria-label="Painéis">
+        <button class="item-sidebar ativo" type="button" data-painel="roteirizacao" aria-current="page">
+          <span class="icone-sidebar" aria-hidden="true">⌖</span>
+          <span><strong>Painel de roteirização</strong><small>Monte e envie as rotas</small></span>
+          <span id="badge-roteirizacao" class="badge-sidebar">0</span>
+        </button>
+        <button class="item-sidebar" type="button" data-painel="relatorios">
+          <span class="icone-sidebar" aria-hidden="true">▤</span>
+          <span><strong>Relatórios de entregas</strong><small>Mapa, status e histórico</small></span>
+          <span id="badge-relatorios" class="badge-sidebar">0</span>
+        </button>
+      </nav>
+      <div class="sidebar-ajuda"><span class="indicador-online" aria-hidden="true"></span><span><strong>Operação conectada</strong><small>Sincronização automática ativa</small></span></div>
+    </aside>
+
+    <div class="area-central">
+    <section class="resumo" aria-label="Resumo das entregas">
+      <article class="cartao-resumo">
+        <span>Entregas pendentes</span>
+        <strong id="total-pendentes" aria-live="polite">—</strong>
+      </article>
+
+      <article class="cartao-resumo">
+        <span>Entregas concluídas</span>
+        <strong id="total-entregues" aria-live="polite">—</strong>
+      </article>
+
+      <article class="cartao-resumo">
+        <span>Entregas devolvidas</span>
+        <strong id="total-devolvidas" aria-live="polite">—</strong>
+      </article>
+    </section>
+
+    <section id="painel-roteirizacao" class="painel-conteudo ativo" aria-labelledby="titulo-roteirizacao">
+      <div class="cabecalho-secao">
+        <div><p class="sobretitulo-formulario">PLANEJAMENTO</p><h2 id="titulo-roteirizacao">Painel de roteirização</h2><p>Cadastre as paradas, confira cada destino e envie a rota pronta ao motorista.</p></div>
+        <span class="selo-fluxo">1&nbsp; Cadastrar <span aria-hidden="true">→</span> 2&nbsp; Enviar <span aria-hidden="true">→</span> 3&nbsp; Acompanhar</span>
+      </div>
+      <div class="roteirizacao-grade">
+    <section class="formulario-painel" aria-labelledby="titulo-cadastro">
+      <div class="titulo-formulario">
+        <div>
+          <p class="sobretitulo-formulario">CADASTRO</p>
+          <h2 id="titulo-cadastro">Nova entrega</h2>
+        </div>
+        <p>Cadastre as paradas primeiro. Depois selecione as entregas e defina o motorista da rota.</p>
+      </div>
+
+      <form id="form-entrega">
+        <label for="cliente">
+          Cliente
+          <input
+            id="cliente"
+            name="cliente"
+            type="text"
+            autocomplete="name"
+            placeholder="Nome do cliente"
+            required
+          >
+        </label>
+
+        <label for="endereco">
+          Endereço da entrega
+          <input
+            id="endereco"
+            name="endereco"
+            type="text"
+            autocomplete="street-address"
+            placeholder="Avenida Francisco José Pedro, 951, Quintino, Divinópolis"
+            aria-describedby="ajuda-endereco"
+            required
+          >
+          <small id="ajuda-endereco" class="ajuda-endereco">
+            Formato: logradouro, número, bairro, cidade.
+          </small>
+        </label>
+
+        <button id="botao-cadastrar" type="submit">
+          Cadastrar entrega
+        </button>
+        <p id="mensagem-cadastro" class="mensagem mensagem-cadastro" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+      </div>
+      <p id="aviso-entregas-nao-enviadas" class="aviso-entregas-nao-enviadas" role="status" aria-live="polite" hidden></p>
+      <section class="selecao-area" aria-labelledby="titulo-selecao-area">
+        <div class="cabecalho-area-rota">
+          <div><p class="sobretitulo-formulario">SELEÇÃO POR REGIÃO</p><h3 id="titulo-selecao-area">Desenhe a área da rota</h3><p>Clique em “Desenhar área”, marque os cantos no mapa e feche o desenho. As entregas pendentes dentro da região serão selecionadas.</p></div>
+          <div class="acoes-area-rota">
+            <button id="iniciar-desenho-regiao" class="botao-secundario" type="button">Desenhar área</button>
+            <button id="fechar-desenho-regiao" type="button" disabled>Fechar área</button>
+            <button id="limpar-desenho-regiao" class="botao-secundario" type="button" disabled>Limpar</button>
+          </div>
+        </div>
+        <p id="estado-desenho-regiao" class="estado-desenho-regiao" role="status" aria-live="polite">Você também pode selecionar paradas individualmente na lista abaixo.</p>
+        <div id="mapa-roteirizacao" class="mapa-roteirizacao" aria-label="Mapa para desenhar região da rota"></div>
+      </section>
+      <section class="paradas-planejadas" aria-labelledby="titulo-paradas-planejadas">
+        <div class="cabecalho-paradas"><div><p class="sobretitulo-formulario">1. SELECIONE AS ENTREGAS</p><h3 id="titulo-paradas-planejadas">Paradas disponíveis</h3><p>As paradas dentro do desenho ficam selecionadas; ajuste a lista se precisar.</p></div><span id="resumo-paradas-rota" class="contador-paradas">0 selecionadas</span></div>
+        <div id="lista-paradas-rota" class="lista-paradas-rota" aria-live="polite">Carregando paradas…</div>
+      </section>
+      <section class="envio-rota" aria-labelledby="titulo-envio-rota">
+        <div class="cabecalho-envio-rota">
+          <span class="icone-rota" aria-hidden="true">➤</span>
+          <div><p class="sobretitulo-formulario">2. ATRIBUIR E ENVIAR</p><h3 id="titulo-envio-rota">Escolha o motorista da rota</h3><p id="resumo-envio-rota">Selecione as entregas acima e depois escolha quem fará a rota.</p></div>
+        </div>
+        <label for="motorista-rota">Motorista
+          <select id="motorista-rota" aria-label="Escolher motorista para enviar a rota"><option value="">Escolha um motorista</option></select>
+        </label>
+        <button id="enviar-rota" type="button" disabled>Enviar entregas selecionadas</button>
+      </section>
+      <p id="mensagem" class="mensagem" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="painel-relatorios" class="painel-conteudo" aria-labelledby="titulo-relatorios" hidden>
+      <div class="cabecalho-secao">
+        <div><p class="sobretitulo-formulario">ACOMPANHAMENTO</p><h2 id="titulo-relatorios">Relatórios de entregas</h2><p>Consulte o mapa da operação, filtre resultados e veja os registros das paradas.</p></div>
+        <span class="atualizacao-automatica" title="As entregas são atualizadas automaticamente"><i aria-hidden="true"></i><span><strong>Central sincronizada</strong><small>Atualização automática</small></span></span>
+      </div>
+    <section class="painel" aria-labelledby="titulo-mapa">
+      <div class="topo-painel">
+        <div>
+          <h2 id="titulo-mapa">Mapa do dia</h2>
+          <p>Arraste um marcador vermelho para corrigir o ponto. As entregas concluídas ficam somente para consulta.</p>
+        </div>
+
+        <div class="legenda" aria-label="Legenda dos marcadores">
+          <span>
+            <i class="bolinha pendente" aria-hidden="true"></i>
+            Pendente
+          </span>
+          <span>
+            <i class="bolinha entregue" aria-hidden="true"></i>
+            Entregue
+          </span>
+          <span>
+            <i class="bolinha devolvida" aria-hidden="true"></i>
+            Devolvida
+          </span>
+        </div>
+      </div>
+
+      <div class="grade">
+        <div
+          id="mapa"
+          role="region"
+          aria-label="Mapa com a localização das entregas"
+        ></div>
+
+        <aside class="lista-painel" aria-labelledby="titulo-lista">
+          <div class="lista-cabecalho">
+            <div>
+              <h2 id="titulo-lista">Lista de entregas</h2>
+              <p id="resumo-lista" class="resumo-lista">Carregando…</p>
+            </div>
+          </div>
+
+          <label class="busca-entregas" for="busca-entregas">
+            <span class="sr-only">Buscar entrega</span>
+            <span class="icone-busca" aria-hidden="true"></span>
+            <input
+              id="busca-entregas"
+              type="search"
+              placeholder="Buscar cliente, endereço ou entregador"
+              autocomplete="off"
+            >
+          </label>
+
+          <div class="filtros-entregas" role="group" aria-label="Filtrar entregas por status">
+            <button type="button" data-filtro="todas" aria-pressed="true"><span>Todas</span><b id="contagem-filtro-todas">0</b></button>
+            <button type="button" data-filtro="pendente" aria-pressed="false"><span>Pendentes</span><b id="contagem-filtro-pendente">0</b></button>
+            <button type="button" data-filtro="entregue" aria-pressed="false"><span>Concluídas</span><b id="contagem-filtro-entregue">0</b></button>
+            <button type="button" data-filtro="devolvida" aria-pressed="false"><span>Devolvidas</span><b id="contagem-filtro-devolvida">0</b></button>
+          </div>
+
+          <fieldset class="filtro-periodo-entregas">
+            <legend>Período do relatório</legend>
+            <label class="seletor-periodo" for="atalho-periodo"><span aria-hidden="true">◷</span><select id="atalho-periodo" aria-label="Escolher período do relatório">
+              <option value="todos">Todo o histórico</option>
+              <option value="hoje">Hoje</option>
+              <option value="7dias">Últimos 7 dias</option>
+              <option value="30dias">Últimos 30 dias</option>
+              <option value="personalizado">Escolher datas…</option>
+            </select></label>
+            <div id="datas-personalizadas" class="datas-personalizadas" hidden>
+              <label for="historico-de">De<input id="historico-de" type="date"></label>
+              <span aria-hidden="true">—</span>
+              <label for="historico-ate">Até<input id="historico-ate" type="date"></label>
+              <button id="limpar-historico" type="button">Limpar</button>
+            </div>
+          </fieldset>
+
+          <div id="lista-entregas" aria-live="polite" aria-busy="true">
+            Carregando entregas…
+          </div>
+
+        </aside>
+      </div>
+    </section>
+    </section>
+    </div>
+  </main>
+
+  <dialog id="dialog-edicao" aria-labelledby="titulo-edicao">
+    <form id="form-edicao">
+      <input type="hidden" name="id">
+      <div class="cabecalho-edicao">
+        <div>
+          <p class="sobretitulo-formulario">ALTERAÇÃO</p>
+          <h2 id="titulo-edicao">Editar entrega</h2>
+        </div>
+        <button class="botao-fechar-dialogo" type="button" aria-label="Fechar">×</button>
+      </div>
+
+      <label for="editar-cliente">
+        Cliente
+        <input id="editar-cliente" name="cliente" type="text" required>
+      </label>
+
+      <label for="editar-endereco">
+        Endereço da entrega
+        <input
+          id="editar-endereco"
+          name="endereco"
+          type="text"
+          placeholder="Avenida Francisco José Pedro, 951, Quintino, Divinópolis"
+          aria-describedby="ajuda-endereco-edicao"
+          required
+        >
+        <small id="ajuda-endereco-edicao" class="ajuda-endereco">
+          Formato: logradouro, número, bairro, cidade.
+        </small>
+      </label>
+
+      <label for="editar-motorista">
+        Entregador responsável (opcional)
+        <input id="editar-motorista" name="motorista" type="text" placeholder="Ainda não atribuído">
+      </label>
+
+      <div class="botoes-edicao">
+        <button id="cancelar-edicao" class="botao-secundario" type="button">Cancelar</button>
+        <button id="salvar-edicao" type="submit">Salvar alterações</button>
+      </div>
+      <p id="mensagem-edicao" class="mensagem" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+</body>
+</html>

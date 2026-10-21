@@ -1,0 +1,55 @@
+/* AutoMix | acesso seguro */
+:root { color-scheme: light; font-family: Inter,"Segoe UI",Arial,sans-serif; font-synthesis:none; text-rendering: optimizeLegibility; color:#153b4d; background:#edf3f4; --navy:#073b57; --navy-deep:#052f49; --green:#087e69; --green-dark:#066653; --line:#d9e5e8; --muted:#627982; }
+* { box-sizing:border-box; }
+html,body { min-width:320px; min-height:100%; margin:0; }
+body { min-height:100vh; color:#153b4d; background:radial-gradient(ellipse at 14% 12%,rgb(68 157 134 / 13%),transparent 32%),radial-gradient(ellipse at 87% 88%,rgb(7 59 87 / 9%),transparent 34%),#edf3f4; font-size:16px; line-height:1.5; }
+button,input { font:inherit; }
+button,input,a { -webkit-tap-highlight-color:transparent; }
+button { display:inline-flex; align-items:center; justify-content:space-between; gap:12px; min-height:54px; padding:0 18px; border:0; border-radius:11px; color:#fff; background:var(--green); font-weight:800; cursor:pointer; transition:background .16s,transform .16s,box-shadow .16s; }
+button:hover:not(:disabled) { background:var(--green-dark); box-shadow:0 6px 16px rgb(6 102 83 / 18%); transform:translateY(-1px); }
+button:disabled { opacity:.6; cursor:not-allowed; }
+button:focus-visible,input:focus-visible,a:focus-visible { outline:3px solid #e6b84d; outline-offset:3px; }
+.pagina-acesso { display:grid; min-height:100vh; align-content:center; justify-items:center; padding:30px 18px; }
+.cartao-acesso { display:grid; grid-template-columns:minmax(230px,.78fr) minmax(340px,1fr); grid-template-rows:1fr auto; width:min(820px,100%); overflow:hidden; border:1px solid #d7e3e6; border-radius:22px; background:#fff; box-shadow:0 26px 75px rgb(7 48 70 / 13%); }
+.marca-acesso { position:relative; isolation:isolate; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; grid-column:1; grid-row:1 / span 2; min-height:470px; padding:38px; overflow:hidden; color:#fff; background:radial-gradient(circle at 85% 8%,rgb(73 169 134 / 26%),transparent 32%),linear-gradient(145deg,#062f49,#084966 68%,#08735f); }
+.marca-acesso::before,.marca-acesso::after { position:absolute; z-index:-1; width:250px; height:250px; border:1px solid rgb(255 255 255 / 9%); border-radius:50%; content:""; }
+.marca-acesso::before { right:-120px; bottom:-90px; box-shadow:0 0 0 24px rgb(255 255 255 / 3%),0 0 0 50px rgb(255 255 255 / 2%); }
+.marca-acesso::after { top:-160px; left:-150px; }
+.logo-automix { position:relative; color:#fff; font-size:clamp(2.3rem,5vw,3rem); font-style:italic; font-weight:1000; letter-spacing:-.08em; line-height:1; }
+.logo-automix span { margin-left:2px; }
+.logo-automix::after { position:absolute; right:0; bottom:-8px; left:1px; height:4px; background:#43b34d; content:""; transform:skewX(-24deg); }
+.assinatura-loja { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; margin-top:18px; color:#fff; font-size:.72rem; }
+.marca-ancora { padding:6px 9px; border:1px solid rgb(255 255 255 / 22%); border-radius:99px; color:#fff; background:#bd3045; font-size:.66rem; white-space:nowrap; }
+.chamada-marca { max-width:250px; margin:42px 0 0; color:#d6ebe8; font-size:1.02rem; font-weight:600; line-height:1.5; }
+#area-login,#area-bootstrap { grid-column:2; grid-row:1; align-self:center; padding:40px 42px 20px; }
+#area-login[hidden],#area-bootstrap[hidden] { display:none !important; }
+.sobretitulo { margin:0 0 6px; color:#07806a; font-size:.72rem; font-weight:900; letter-spacing:.14em; }
+h1 { margin:0; color:var(--navy); font-size:clamp(1.75rem,3vw,2.1rem); letter-spacing:-.04em; line-height:1.15; }
+.descricao { margin:9px 0 22px; color:var(--muted); font-size:.95rem; }
+form { display:grid; gap:14px; }
+form label { display:grid; gap:6px; color:#294957; font-size:.89rem; font-weight:750; }
+input { width:100%; min-height:49px; padding:10px 12px; border:1px solid #c7d8dd; border-radius:10px; color:#163f52; background:#fff; font-size:.94rem; transition:border-color .15s,box-shadow .15s; }
+input::placeholder { color:#8a9ba1; }
+input:focus { border-color:#4ca996; outline:0; box-shadow:0 0 0 3px rgb(8 126 105 / 12%); }
+form button { width:100%; margin-top:4px; }
+form button span:first-child { margin:0 auto; padding-left:24px; }
+form button span:last-child { font-size:1.2rem; }
+.mensagem-acesso { grid-column:2; grid-row:2; min-height:24px; margin:0 42px 28px; color:var(--muted); font-size:.84rem; }
+.mensagem-acesso[data-tipo="erro"] { color:#b4233b; font-weight:750; }
+.mensagem-acesso[data-tipo="sucesso"] { color:#087452; font-weight:750; }
+.rodape-acesso { margin:13px 0 0; color:#71858c; font-size:.8rem; }
+[hidden] { display:none !important; }
+@media (max-width:650px) {
+  .pagina-acesso { align-content:center; padding:18px 13px; }
+  .cartao-acesso { grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto auto; width:min(460px,100%); border-radius:19px; }
+  .marca-acesso { grid-column:1; grid-row:1; align-items:center; justify-content:center; min-height:142px; padding:19px; }
+  .logo-automix { font-size:2.25rem; }
+  .assinatura-loja { width:min(220px,100%); margin-top:14px; }
+  .chamada-marca { display:none; }
+  #area-login,#area-bootstrap { grid-column:1; grid-row:2; padding:23px 22px 12px; }
+  .descricao { margin-bottom:16px; }
+  form { gap:11px; }
+  .mensagem-acesso { grid-column:1; grid-row:3; margin:0 22px 20px; }
+}
+@media (max-width:380px) { .marca-acesso { min-height:126px; } #area-login,#area-bootstrap { padding:20px 17px 10px; } .mensagem-acesso { margin-right:17px; margin-left:17px; } }
+@media (prefers-reduced-motion:reduce) { *,*::before,*::after { transition-duration:.01ms !important; } }

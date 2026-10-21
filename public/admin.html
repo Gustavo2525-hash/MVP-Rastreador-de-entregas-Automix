@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#073c5b">
+  <title>Painel administrativo | AutoMix</title>
+  <link rel="stylesheet" href="/motorista.css?v=20261020-visual-refresh">
+  <link rel="stylesheet" href="/admin.css?v=20261020-visual-refresh">
+  <script defer src="/admin.js?v=20261019-v1"></script>
+</head>
+<body>
+  <header class="cabecalho-motorista">
+    <a class="marca-loja" href="/" aria-label="AutoMix, voltar à Central de Operações">
+      <span class="logo-automix">AUTO<span>MIX</span></span>
+      <span class="assinatura-loja"><span>Grupo <strong>Auto Bitts</strong></span><span class="marca-ancora">Rede <strong>ÂNCORA</strong></span></span>
+    </a>
+    <div class="titulo-motorista">
+      <p class="sobretitulo">GESTÃO DE ACESSOS</p>
+      <h1>Painel administrativo</h1>
+      <p>Crie e organize os acessos da equipe de entregas.</p>
+    </div>
+    <div class="acoes-admin">
+      <a class="link-central" href="/">Dashboard de entregas</a>
+      <button id="sair-admin" class="botao-sair" type="button">Sair</button>
+    </div>
+  </header>
+
+  <main class="conteudo-motorista conteudo-admin">
+    <section class="seletor-motorista introducao-admin">
+      <div>
+        <p class="rotulo-secao">USUÁRIO MASTER</p>
+        <h2 id="saudacao-admin">Olá, Gustavo</h2>
+        <p>Você pode criar contas de roteirização e de motorista. Cada pessoa terá seu próprio usuário e senha.</p>
+      </div>
+      <div class="resumo-funcoes" aria-label="Funções dos usuários">
+        <span><b>Roteirizador</b> organiza as entregas e endereços.</span>
+        <span><b>Motorista</b> acessa sua rota pelo celular e registra o resultado.</span>
+      </div>
+    </section>
+
+    <div class="grade-admin">
+      <section class="painel-entregas formulario-usuario" aria-labelledby="titulo-criar-usuario">
+        <div class="cabecalho-lista">
+          <div><p class="rotulo-secao">NOVO ACESSO</p><h2 id="titulo-criar-usuario">Criar usuário</h2></div>
+        </div>
+        <form id="form-usuario">
+          <label for="nome-usuario">Nome da pessoa<input id="nome-usuario" name="nome" autocomplete="name" placeholder="Ex.: Leonardo Silva" required></label>
+          <label for="login-usuario">Nome de usuário<input id="login-usuario" name="usuario" autocomplete="off" placeholder="Ex.: leonardo" pattern="[a-zA-Z0-9._-]{3,40}" required><small>Use letras sem acento, números, ponto, hífen ou sublinhado.</small></label>
+          <label for="papel-usuario">Função<select id="papel-usuario" name="papel" required>
+            <option value="roteirizador">Roteirizador — organiza as rotas</option>
+            <option value="motorista">Motorista — acessa pelo celular</option>
+            <option value="master">Master — administra usuários e acessos</option>
+          </select></label>
+          <label for="senha-usuario">Senha inicial<input id="senha-usuario" name="senha" type="password" minlength="8" autocomplete="new-password" placeholder="Ex.: Automix123" aria-describedby="regra-senha" required><small id="regra-senha">Use no mínimo 8 caracteres. Automix123 é aceita.</small></label>
+          <p id="ajuda-motorista" class="ajuda-admin" hidden>Para o motorista receber as paradas certas, o nome da pessoa deve ser igual ao campo “Entregador responsável” nas entregas.</p>
+          <button id="criar-usuario" type="submit">Criar acesso</button>
+          <p id="mensagem-admin" class="mensagem-admin" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="painel-entregas lista-usuarios" aria-labelledby="titulo-usuarios">
+        <div class="cabecalho-lista">
+          <div><p class="rotulo-secao">EQUIPE</p><h2 id="titulo-usuarios">Usuários cadastrados</h2></div>
+          <span id="total-usuarios" class="contador-rota">—</span>
+        </div>
+        <p class="ajuda-admin">Crie, por exemplo, Leonardo e Carlos como roteirizadores. Depois cadastre cada motorista com o nome que usa na rota.</p>
+        <div id="lista-usuarios" class="lista-usuarios-itens" aria-live="polite" aria-busy="true">Carregando usuários…</div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

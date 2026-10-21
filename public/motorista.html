@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#073c5b">
+  <meta name="description" content="Área do motorista para consultar e registrar entregas.">
+  <title>Área do motorista | AutoMix</title>
+  <link rel="stylesheet" href="/motorista.css?v=20261020-visual-refresh">
+  <script defer src="/motorista.js?v=20261020-qa-polish"></script>
+</head>
+<body>
+  <header class="cabecalho-motorista">
+    <div class="marca-loja" aria-label="AutoMix, Grupo Auto Bitts, Rede Âncora">
+      <span class="logo-automix">AUTO<span>MIX</span></span>
+      <span class="assinatura-loja">
+        <span class="grupo-bitts">Grupo <strong>Auto Bitts</strong></span>
+        <span class="marca-ancora">Rede <strong>ÂNCORA</strong></span>
+      </span>
+    </div>
+    <div class="titulo-motorista">
+      <p class="sobretitulo">ÁREA DO MOTORISTA</p>
+      <h1>Minhas entregas</h1>
+      <p>Olá, <span id="nome-motorista">motorista</span>. Siga a lista e registre cada parada.</p>
+    </div>
+    <div class="acoes-motorista">
+      <button id="sair-motorista" class="botao-sair" type="button">Sair</button>
+    </div>
+  </header>
+
+  <div id="estado-conexao" class="estado-conexao" role="status" aria-live="polite" hidden>
+    <span id="texto-estado-conexao"></span>
+    <button id="tentar-sincronizar" type="button" hidden>Tentar enviar agora</button>
+  </div>
+
+  <main class="conteudo-motorista">
+    <section id="aviso-acesso-motorista" class="aviso-acesso-motorista" hidden aria-labelledby="titulo-acesso-motorista">
+      <p class="rotulo-secao">ACESSO DA EQUIPE</p>
+      <h2 id="titulo-acesso-motorista">Esta área é exclusiva para motoristas</h2>
+      <p id="detalhe-acesso-motorista">Entre com a conta de motorista cadastrada pelo administrador.</p>
+      <div class="acoes-aviso-motorista"><a href="/" class="link-dashboard-motorista">Voltar ao dashboard</a><button id="trocar-conta-motorista" type="button">Sair e entrar com outra conta</button></div>
+    </section>
+    <div id="conteudo-rota-motorista" hidden>
+      <section class="resumo-rota" aria-label="Progresso da rota">
+        <article class="indicador-rota indicador-feitas">
+          <span>Feitas</span>
+          <strong id="total-feitas" aria-live="polite">0</strong>
+        </article>
+        <article class="indicador-rota indicador-faltam">
+          <span>Faltam</span>
+          <strong id="total-faltam" aria-live="polite">0</strong>
+        </article>
+        <article class="indicador-rota indicador-tempo">
+          <span>Tempo em rota</span>
+          <strong id="tempo-rota" role="timer" aria-live="off">--:--:--</strong>
+        </article>
+      </section>
+
+      <section id="painel-inicio-rota" class="painel-inicio-rota" hidden aria-labelledby="titulo-inicio-rota">
+        <div>
+          <p class="rotulo-secao">ROTA PRONTA</p>
+          <h2 id="titulo-inicio-rota">Comece quando estiver pronto</h2>
+          <p id="resumo-inicio-rota">Confira o motorista e as paradas. O tempo só começa quando tocar no botão.</p>
+        </div>
+        <button id="botao-iniciar-rota" class="botao-iniciar-rota" type="button">▶&nbsp; Iniciar rota</button>
+      </section>
+
+      <section class="painel-entregas painel-rota-simples" aria-labelledby="titulo-entregas">
+        <div class="cabecalho-lista">
+          <div>
+            <p class="rotulo-secao">SUA ROTA</p>
+            <h2 id="titulo-entregas">Entregas pendentes</h2>
+          </div>
+        </div>
+        <p id="mensagem-rota" class="mensagem-rota" role="status" aria-live="polite">Carregando suas entregas…</p>
+        <div id="lista-rota" class="lista-rota" aria-live="polite" aria-busy="false"></div>
+      </section>
+    </div>
+  </main>
+
+  <dialog id="dialog-finalizar" aria-labelledby="titulo-finalizar">
+    <form id="form-finalizar" enctype="multipart/form-data">
+      <input type="hidden" name="id">
+      <div class="topo-dialogo">
+        <div>
+          <p class="rotulo-secao">REGISTRO DA PARADA</p>
+          <h2 id="titulo-finalizar">Registrar parada</h2>
+        </div>
+        <button id="fechar-dialogo" class="fechar-dialogo" type="button" aria-label="Fechar">×</button>
+      </div>
+      <p id="endereco-finalizar" class="endereco-finalizar"></p>
+
+      <label class="campo-foto" for="foto-entrega">
+        <span class="icone-camera" aria-hidden="true">📷</span>
+        <span><strong>Tirar foto do local ou comprovante (opcional)</strong><small>Recomendado como comprovante. JPEG, PNG ou WebP. Até 8 MB.</small></span>
+        <input id="foto-entrega" name="foto" type="file" accept="image/jpeg,image/png,image/webp" capture="environment">
+      </label>
+      <p id="nome-foto" class="nome-foto">Nenhuma foto selecionada</p>
+
+      <fieldset class="opcoes-resultado">
+        <legend>O que aconteceu com a entrega?</legend>
+        <label class="opcao-resultado">
+          <input type="radio" name="resultado_entrega" value="entregue" required>
+          <span><strong>Entregue</strong></span>
+        </label>
+        <label class="opcao-resultado devolvida">
+          <input type="radio" name="resultado_entrega" value="devolvida" required>
+          <span><strong>Devolvido</strong></span>
+        </label>
+      </fieldset>
+
+      <label class="campo-comentario" for="comentario-entrega">
+        Comentário (opcional)
+        <textarea id="comentario-entrega" name="comentario" rows="3" maxlength="500" placeholder="Se quiser, escreva uma observação"></textarea>
+      </label>
+      <p id="mensagem-finalizar" class="mensagem-rota" role="status" aria-live="polite"></p>
+      <div class="acoes-dialogo">
+        <button id="cancelar-finalizacao" class="botao-cancelar" type="button">← Voltar</button>
+        <button id="confirmar-finalizacao" type="submit">Salvar registro</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
