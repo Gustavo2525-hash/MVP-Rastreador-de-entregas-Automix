@@ -20,16 +20,25 @@ const usarSupabaseStorage = Boolean(supabaseUrl && supabaseServiceRoleKey);
 
 fs.mkdirSync(pastaFotos, { recursive: true });
 
-const banco = new Pool({
-  connectionString: process.env.DATABASE_URL || undefined,
-  host: process.env.PGHOST,
-  port: Number(process.env.PGPORT),
-  database: process.env.PGDATABASE,
-  user: process.env.PGUSER,
-  password: process.env.PGPASSWORD,
-  ssl: process.env.PGSSL === 'true' ? { rejectUnauthorized: false } : undefined,
-  max: Number(process.env.PGPOOL_MAX) || 5,
-});
+const usarSsl = process.env.PGSSL === 'true' || Boolean(process.env.DATABASE_URL);
+
+const banco = new Pool(
+  process.env.DATABASE_URL
+    ? {
+        connectionString: process.env.DATABASE_URL,
+        ssl: usarSsl ? { rejectUnauthorized: false } : undefined,
+        max: Number(process.env.PGPOOL_MAX) || 5,
+      }
+    : {
+        host: process.env.PGHOST,
+        port: Number(process.env.PGPORT) || 5432,
+        database: process.env.PGDATABASE,
+        user: process.env.PGUSER,
+        password: process.env.PGPASSWORD,
+        ssl: usarSsl ? { rejectUnauthorized: false } : undefined,
+        max: Number(process.env.PGPOOL_MAX) || 5,
+      }
+);
 
 banco.on('error', (erro) => {
   console.error('Erro inesperado na conexão com PostgreSQL:', erro.message);
@@ -288,12 +297,12 @@ async function geocodificarEndereco(endereco) {
   url.searchParams.set('autocomplete', 'false');
 
   const resposta = await fetch(url, {
-    headers: {
-      Accept: 'application/json',
-      'User-Agent': 'RastreabilidadeEntregas/1.0 (backend)',
-    },
-    signal: AbortSignal.timeout(12000),
-  });
+  headers: {
+    Accept: 'application/json',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  },
+  signal: AbortSignal.timeout(12000),
+});
 
   if (!resposta.ok) {
     // O corpo pode ser JSON ou texto simples. Nunca registre a URL, pois
