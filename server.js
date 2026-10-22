@@ -276,13 +276,38 @@ function extrairMunicipio(endereco) {
 }
 
 async function geocodificarEndereco(endereco) {
-  const chave = process.env.MAPTILER_API_KEY?.trim();
+  const url = new URL('https://nominatim.openstreetmap.org/search');
+  url.searchParams.set('q', endereco);
+  url.searchParams.set('format', 'json');
+  url.searchParams.set('limit', '1');
+  url.searchParams.set('countrycodes', 'br');
 
-  if (!chave) {
-    const erro = new Error('A chave do MapTiler não está configurada.');
-    erro.code = 'MAPTILER_API_KEY_MISSING';
-    throw erro;
+  const resposta = await fetch(url, {
+    headers: {
+      'User-Agent': 'RastreabilidadeEntregas/1.0 (contato@automix.com)',
+      'Accept-Language': 'pt-BR,pt;q=0.9',
+    },
+    signal: AbortSignal.timeout(12000),
+  });
+
+  if (!resposta.ok) {
+    throw new Error(`O serviço de geocodificação respondeu com HTTP ${resposta.status}.`);
   }
+
+  const dados = await resposta.json();
+  if (!Array.isArray(dados) || dados.length === 0) {
+    return null;
+  }
+
+  const latitude = Number(dados[0].lat);
+  const longitude = Number(dados[0].lon);
+
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+    return null;
+  }
+
+  return { latitude, longitude };
+}
 
   const url = new URL(
     `https://api.maptiler.com/geocoding/${encodeURIComponent(endereco)}.json`
@@ -366,7 +391,7 @@ async function geocodificarEndereco(endereco) {
   }
 
   return { latitude, longitude };
-}
+
 
 // Primeiro acesso: cria a conta principal Gustavo e define a senha no navegador.
 app.get('/api/auth/status', async (req, res) => {
