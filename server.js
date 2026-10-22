@@ -309,58 +309,7 @@ async function geocodificarEndereco(endereco) {
   return { latitude, longitude };
 }
 
-  const url = new URL(
-    `https://api.maptiler.com/geocoding/${encodeURIComponent(endereco)}.json`
-  );
 
-  url.searchParams.set('key', chave);
-  url.searchParams.set('country', 'br');
-  url.searchParams.set('language', 'pt');
-  url.searchParams.set('limit', '5');
-  url.searchParams.set('types', 'address,road');
-  url.searchParams.set('fuzzyMatch', 'false');
-  url.searchParams.set('autocomplete', 'false');
-
-  const resposta = await fetch(url, {
-  headers: {
-    Accept: 'application/json',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-  },
-  signal: AbortSignal.timeout(12000),
-});
-
-  if (!resposta.ok) {
-    // O corpo pode ser JSON ou texto simples. Nunca registre a URL, pois
-    // ela contém a chave na query string, e remova a chave do corpo também.
-    let detalhe = '';
-    try {
-      const corpo = await resposta.text();
-      try {
-        const json = JSON.parse(corpo);
-        detalhe = json.message || json.error || corpo;
-      } catch {
-        detalhe = corpo;
-      }
-    } catch {
-      // Mantém o diagnóstico HTTP se não for possível ler a resposta.
-    }
-    detalhe = String(detalhe).replaceAll(chave, '[chave ocultada]').replace(/\s+/g, ' ').trim().slice(0, 500);
-
-    const erro = new Error(
-      `O serviço de localização respondeu com HTTP ${resposta.status}${
-        detalhe ? `: ${detalhe}` : '.'
-      }`
-    );
-    erro.code = 'MAPTILER_HTTP_ERROR';
-    erro.status = resposta.status;
-    throw erro;
-  }
-
-  const dados = await resposta.json();
-  const municipio = extrairMunicipio(endereco);
-  if (!municipio) {
-    return null;
-  }
 
   // Não usar cegamente o primeiro resultado: nomes de ruas parecidos podem
   // apontar para outro município. Só aceitamos endereço/rua que corresponda
